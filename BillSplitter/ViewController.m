@@ -21,16 +21,29 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
     
  
 }
 - (IBAction)calculateBill:(UIButton *)sender {
     
-    double bill = [self.billAmount.text floatValue];
+    int rounded = roundf(self.amountOfPeople.value);
+    
+    NSDecimalNumber *bill = [[NSDecimalNumber alloc]initWithString:self.billAmount.text];
+  
+    NSDecimalNumber *people = [[NSDecimalNumber alloc]initWithInt:rounded];
+    
+    NSDecimalNumber *finalBillAmount = [bill decimalNumberByDividingBy:people];
+    
+    NSNumberFormatter *amountFormatted = [[NSNumberFormatter alloc] init];
+    [amountFormatted setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [amountFormatted setMaximumFractionDigits:2];
+    
+    NSString *numberAsString = [amountFormatted stringFromNumber:finalBillAmount];
     
     
-    NSString *finalBillText = [NSString stringWithFormat:@"To split this bill you need to pay $%0.2f each.", bill];
+    
+    
+    NSString *finalBillText = [NSString stringWithFormat:@"To split this bill you need to pay %@ each.", numberAsString];
     
     self.finalBill.text = finalBillText;
     
